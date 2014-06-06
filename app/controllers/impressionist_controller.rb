@@ -16,7 +16,8 @@ module ImpressionistController
       if should_count_impression?(opts)
         if obj.respond_to?("impressionable?")
           if unique_instance?(obj, opts[:unique])
-            obj.impressions.create(associative_create_statement({:message => message}))
+            params = { message: message }.merge(opts.except(:unique))
+            obj.impressions.create(associative_create_statement(params))
           end
         else
           # we could create an impression anyway. for classes, too. why not?
